@@ -110,4 +110,10 @@ public class TransactionServiceImpl implements TransactionService {
 	accountDao.save(account);
 	return transactionSave;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Transaction findByReference(String reference) {
+	return transactionDao.findByReference(reference);
+    }
 }

@@ -64,9 +64,12 @@ public class TransactionController {
 
     @PostMapping(value = "/status")
     public TransactionStatusOutDto status(@RequestBody TransactionStatusInDto transactionStatusInDto) {
+	Transaction tx = transactionService.findByReference(transactionStatusInDto.getReference());
 	TransactionStatusOutDto transactionStatusOutDto = new TransactionStatusOutDto();
-	transactionStatusOutDto.setReference("111");
-	transactionStatusOutDto.setStatus("sss");
+	transactionStatusOutDto.setReference(tx.getReference());
+	transactionStatusOutDto.setStatus(tx.getTransactionStatus().toString());
+	transactionStatusOutDto.setFee(tx.getFee());
+	transactionStatusOutDto.setAmount(tx.getAmount());
 	return transactionStatusOutDto;
     }
 

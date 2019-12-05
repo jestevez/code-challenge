@@ -12,6 +12,8 @@ public interface TransactionService {
 
     List<Transaction> findAll();
 
+    Transaction findByReference(String reference);
+
     Page<Transaction> search(String accountIban, String orderBy, String direction, int page, int size);
 
     Transaction save(Transaction transaction);
