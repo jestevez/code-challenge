@@ -63,14 +63,28 @@ public class TransactionController {
     }
 
     @PostMapping(value = "/status")
-    public TransactionStatusOutDto status(@RequestBody TransactionStatusInDto transactionStatusInDto) {
-	Transaction tx = transactionService.findByReference(transactionStatusInDto.getReference());
-	TransactionStatusOutDto transactionStatusOutDto = new TransactionStatusOutDto();
-	transactionStatusOutDto.setReference(tx.getReference());
-	transactionStatusOutDto.setStatus(tx.getTransactionStatus().toString());
-	transactionStatusOutDto.setFee(tx.getFee());
-	transactionStatusOutDto.setAmount(tx.getAmount());
-	return transactionStatusOutDto;
+    public ResponseEntity<TransactionStatusOutDto> status(@RequestBody TransactionStatusInDto transactionStatusInDto) {
+	try {
+	    Transaction tx = transactionService.findByReference(transactionStatusInDto.getReference());
+
+	    if (tx == null) {
+		return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
+	    }
+	    TransactionStatusOutDto transactionStatusOutDto = new TransactionStatusOutDto();
+	    transactionStatusOutDto.setReference(tx.getReference());
+	    transactionStatusOutDto.setStatus(tx.getTransactionStatus().toString());
+	    transactionStatusOutDto.setFee(tx.getFee());
+	    transactionStatusOutDto.setAmount(tx.getAmount());
+	    return new ResponseEntity<>((TransactionStatusOutDto) transactionStatusOutDto, new HttpHeaders(),
+		    HttpStatus.CREATED);
+	} catch (Exception e) {
+	    LOG.error("Error in create", e);
+	    TransactionStatusOutDto transactionStatusOutDto = new TransactionStatusOutDto();
+	    transactionStatusOutDto.setStatus(EnumTransactionStatus.INVALID.toString());
+	    transactionStatusOutDto.setReference(transactionStatusInDto.getReference());
+	    return new ResponseEntity<>(transactionStatusOutDto, new HttpHeaders(), HttpStatus.FORBIDDEN);
+
+	}
     }
 
 }
