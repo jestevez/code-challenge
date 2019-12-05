@@ -12,7 +12,7 @@ public interface TransactionService {
 
     List<Transaction> findAll();
 
-    Transaction findByReference(String reference);
+    Transaction findByReferenceAndChannel(String reference, String channel);
 
     Page<Transaction> search(String accountIban, String orderBy, String direction, int page, int size);
 

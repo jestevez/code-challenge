@@ -22,6 +22,8 @@ public class CreateTransactionDto implements Serializable {
     private BigDecimal fee;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("channel")
+    private String channel;
 
     public String getReference() {
 	return reference;
@@ -69,6 +71,14 @@ public class CreateTransactionDto implements Serializable {
 
     public void setDescription(String description) {
 	this.description = description;
+    }
+
+    public String getChannel() {
+	return channel;
+    }
+
+    public void setChannel(String channel) {
+	this.channel = channel;
     }
 
 }

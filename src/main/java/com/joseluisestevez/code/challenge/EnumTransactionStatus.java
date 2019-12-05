@@ -1,5 +1,6 @@
 package com.joseluisestevez.code.challenge;
 
 public enum EnumTransactionStatus {
-    ENDING, SETTLED, FUTURE, INVALID
+    ENDING, SETTLED, FUTURE, INVALID, PENDING
+
 }

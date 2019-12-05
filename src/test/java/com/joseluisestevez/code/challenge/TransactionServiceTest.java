@@ -26,11 +26,13 @@ class TransactionServiceTest {
     @Test
     void testFindByReference() {
 	String reference = "12345A";
+	String channel = EnumTypeChannel.CLIENT.toString();
 	Transaction transaction = new Transaction();
 	transaction.setReference(reference);
-	Mockito.when(transactionService.findByReference(Mockito.eq(reference))).thenReturn(transaction);
+	Mockito.when(transactionService.findByReferenceAndChannel(Mockito.eq(reference), Mockito.eq(channel)))
+		.thenReturn(transaction);
 
-	Transaction tx = transactionService.findByReference(reference);
+	Transaction tx = transactionService.findByReferenceAndChannel(reference, channel);
 	assertEquals(reference, tx.getReference(), "Expected equals");
     }
 

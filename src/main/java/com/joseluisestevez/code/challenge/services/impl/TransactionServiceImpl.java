@@ -20,7 +20,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.joseluisestevez.code.challenge.EnumMovementType;
 import com.joseluisestevez.code.challenge.EnumTransactionStatus;
+import com.joseluisestevez.code.challenge.EnumTypeChannel;
 import com.joseluisestevez.code.challenge.db.dao.AccountDao;
 import com.joseluisestevez.code.challenge.db.dao.TransactionDao;
 import com.joseluisestevez.code.challenge.db.model.Account;
@@ -48,7 +50,7 @@ public class TransactionServiceImpl implements TransactionService {
     public Page<Transaction> search(String accountIban, String orderBy, String direction, int page, int size) {
 
 	Sort sort = null;
-	if (direction.equals("ASC")) {
+	if (direction.equals(Sort.Direction.ASC.toString())) {
 	    sort = Sort.by(Sort.Direction.ASC, orderBy);
 	} else {
 	    sort = Sort.by(Sort.Direction.DESC, orderBy);
@@ -87,6 +89,10 @@ public class TransactionServiceImpl implements TransactionService {
 	DozerBeanMapper dozer = new DozerBeanMapper();
 	dozer.map(createTransactionDto, transaction);
 
+	if (createTransactionDto.getChannel() == null) {
+	    createTransactionDto.setChannel(EnumTypeChannel.INTERNAL.toString());
+	}
+	transaction.setChannel(EnumTypeChannel.valueOf(createTransactionDto.getChannel()));
 	transaction.setBaseAmount(transaction.getAmount().abs().add(transaction.getFee()).abs());
 	transaction.setFee(createTransactionDto.getFee().abs());
 	if (transaction.getBaseAmount().compareTo(account.getBalance()) > 0) {
@@ -94,10 +100,10 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	if (transaction.getAmount().compareTo(BigDecimal.ZERO) > 0) {
-	    transaction.setMovementType("CREDIT");
+	    transaction.setMovementType(EnumMovementType.CREDIT);
 	    account.setBalance(account.getBalance().add(transaction.getBaseAmount()));
 	} else {
-	    transaction.setMovementType("DEBIT");
+	    transaction.setMovementType(EnumMovementType.DEBIT);
 	    account.setBalance(account.getBalance().subtract(transaction.getBaseAmount()));
 	}
 
@@ -113,7 +119,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(readOnly = true)
-    public Transaction findByReference(String reference) {
-	return transactionDao.findByReference(reference);
+    public Transaction findByReferenceAndChannel(String reference, String channel) {
+	return transactionDao.findByReferenceAndChannel(reference, EnumTypeChannel.valueOf(channel));
     }
 }

@@ -65,7 +65,8 @@ public class TransactionController {
     @PostMapping(value = "/status")
     public ResponseEntity<TransactionStatusOutDto> status(@RequestBody TransactionStatusInDto transactionStatusInDto) {
 	try {
-	    Transaction tx = transactionService.findByReference(transactionStatusInDto.getReference());
+	    Transaction tx = transactionService.findByReferenceAndChannel(transactionStatusInDto.getReference(),
+		    transactionStatusInDto.getChannel());
 
 	    if (tx == null) {
 		return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);

@@ -15,7 +15,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.joseluisestevez.code.challenge.EnumMovementType;
 import com.joseluisestevez.code.challenge.EnumTransactionStatus;
+import com.joseluisestevez.code.challenge.EnumTypeChannel;
 
 @Entity
 @Table(name = "transactions")
@@ -50,11 +52,16 @@ public class Transaction implements Serializable {
     private String description;
 
     @Column(name = "movement_type")
-    private String movementType;
+    @Enumerated(EnumType.STRING)
+    private EnumMovementType movementType;
 
     @Column(name = "transaction_status")
     @Enumerated(EnumType.STRING)
     private EnumTransactionStatus transactionStatus;
+
+    @Column(name = "channel")
+    @Enumerated(EnumType.STRING)
+    private EnumTypeChannel channel;
 
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -124,11 +131,11 @@ public class Transaction implements Serializable {
 	this.description = description;
     }
 
-    public String getMovementType() {
+    public EnumMovementType getMovementType() {
 	return movementType;
     }
 
-    public void setMovementType(String movementType) {
+    public void setMovementType(EnumMovementType movementType) {
 	this.movementType = movementType;
     }
 
@@ -146,6 +153,14 @@ public class Transaction implements Serializable {
 
     public void setCreateAt(Date createAt) {
 	this.createAt = createAt;
+    }
+
+    public EnumTypeChannel getChannel() {
+	return channel;
+    }
+
+    public void setChannel(EnumTypeChannel channel) {
+	this.channel = channel;
     }
 
 }
