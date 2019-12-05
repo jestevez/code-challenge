@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.joseluisestevez.code.challenge.EnumTransactionStatus;
-import com.joseluisestevez.code.challenge.controllers.ServiceException;
+import com.joseluisestevez.code.challenge.exception.ServiceException;
 import com.joseluisestevez.code.challenge.db.dao.AccountDao;
 import com.joseluisestevez.code.challenge.db.dao.TransactionDao;
 import com.joseluisestevez.code.challenge.db.model.Account;

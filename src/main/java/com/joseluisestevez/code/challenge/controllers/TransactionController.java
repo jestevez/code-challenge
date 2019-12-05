@@ -23,7 +23,7 @@ import com.joseluisestevez.code.challenge.services.TransactionService;
 @RestController
 public class TransactionController {
 
-    private final Logger LOG = LoggerFactory.getLogger(TransactionController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TransactionController.class);
 
     @Autowired
     private TransactionService transactionService;
@@ -47,15 +47,14 @@ public class TransactionController {
 	    transactionStatusOutDto.setAmount(tx.getAmount());
 	    LOG.debug("Sending transactionStatusOutDto[{}]", transactionStatusOutDto);
 
-	    return new ResponseEntity<TransactionStatusOutDto>((TransactionStatusOutDto) transactionStatusOutDto,
-		    new HttpHeaders(), HttpStatus.CREATED);
+	    return new ResponseEntity<>((TransactionStatusOutDto) transactionStatusOutDto, new HttpHeaders(),
+		    HttpStatus.CREATED);
 	} catch (Exception e) {
 	    LOG.error("Error in create", e);
 	    TransactionStatusOutDto transactionStatusOutDto = new TransactionStatusOutDto();
 	    transactionStatusOutDto.setStatus(EnumTransactionStatus.INVALID.toString());
 	    transactionStatusOutDto.setReference(createTransactionDto.getReference());
-	    return new ResponseEntity<TransactionStatusOutDto>(transactionStatusOutDto, new HttpHeaders(),
-		    HttpStatus.FORBIDDEN);
+	    return new ResponseEntity<>(transactionStatusOutDto, new HttpHeaders(), HttpStatus.FORBIDDEN);
 
 	}
 

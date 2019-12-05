@@ -1,4 +1,4 @@
-package com.joseluisestevez.code.challenge.controllers;
+package com.joseluisestevez.code.challenge.exception;
 
 public class ServiceException extends Exception {
     private static final long serialVersionUID = 8665212870224245172L;

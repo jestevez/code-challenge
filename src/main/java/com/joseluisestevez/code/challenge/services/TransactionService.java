@@ -2,9 +2,9 @@ package com.joseluisestevez.code.challenge.services;
 
 import java.util.List;
 
-import com.joseluisestevez.code.challenge.controllers.ServiceException;
 import com.joseluisestevez.code.challenge.db.model.Transaction;
 import com.joseluisestevez.code.challenge.dto.CreateTransactionDto;
+import com.joseluisestevez.code.challenge.exception.ServiceException;
 
 public interface TransactionService {
 
