@@ -2,37 +2,45 @@ package com.joseluisestevez.code.challenge;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.joseluisestevez.code.challenge.db.dao.TransactionDao;
 import com.joseluisestevez.code.challenge.db.model.Transaction;
 import com.joseluisestevez.code.challenge.services.TransactionService;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 class TransactionServiceTest {
-    @MockBean
+
+    @Mock
     private TransactionDao transactionDao;
 
-    @Autowired
+    @Mock
     private TransactionService transactionService;
+
+    @Before
+    public void init() {
+	MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void testFindByReference() {
+	MockitoAnnotations.initMocks(this);
+
 	String reference = "12345A";
-	String channel = EnumTypeChannel.CLIENT.toString();
+	EnumTypeChannel channel = EnumTypeChannel.CLIENT;
 	Transaction transaction = new Transaction();
 	transaction.setReference(reference);
-	Mockito.when(transactionService.findByReferenceAndChannel(Mockito.eq(reference), Mockito.eq(channel)))
+	Mockito.when(
+		transactionService.findByReferenceAndChannel(Mockito.eq(reference), Mockito.eq(channel.toString())))
 		.thenReturn(transaction);
 
-	Transaction tx = transactionService.findByReferenceAndChannel(reference, channel);
+	Transaction tx = transactionService.findByReferenceAndChannel(reference, channel.toString());
 	assertEquals(reference, tx.getReference(), "Expected equals");
     }
 
